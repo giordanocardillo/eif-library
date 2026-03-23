@@ -200,7 +200,23 @@ eif upgrade aws my-app dev
 
 ## ⬡ Contributing
 
-New atoms and molecules are welcome. Follow the existing conventions:
+### Scaffolding with the eif CLI
+
+The fastest way to add a new atom or molecule is via `eif new`, which generates the correct directory structure and starter files automatically:
+
+```bash
+# scaffold a new atom (prompts: name, provider, category)
+eif new atom
+eif new atom my-service       # name pre-filled
+
+# scaffold a new molecule (prompts: name, provider)
+eif new molecule
+eif new molecule my-service
+```
+
+Run these commands from inside this repository. `eif` detects the existing providers from `providers/`, checks for existing versions, and creates the next version if the atom or molecule already exists (e.g. `v2/`). Each scaffold emits starter `main.tf`, `variables.tf`, and `outputs.tf` ready to be filled in.
+
+### Conventions
 
 - One service per atom. No use-case assumptions — keep atoms generic.
 - Place atoms under `atoms/<cloud>/<category>/<name>/v1/` with `main.tf`, `variables.tf`, and `outputs.tf`.
