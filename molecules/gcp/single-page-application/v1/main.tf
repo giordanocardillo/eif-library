@@ -8,7 +8,7 @@ terraform {
   required_version = ">= 1.5"
 }
 
-# ── Atom: GCS (static website origin) ────────────────────────────────────────
+# ── Atom: GCS (static asset origin) ──────────────────────────────────────────
 module "gcs" {
   source = "../../../../atoms/gcp/storage/gcs/v1"
 
@@ -26,12 +26,14 @@ module "armor" {
   blocked_ip_ranges = var.blocked_ip_ranges
 }
 
-# ── Atom: Cloud CDN ───────────────────────────────────────────────────────────
-# depends on: cdn ← gcs.bucket_name
+# ── Atom: Cloud CDN + HTTPS load balancer ────────────────────────────────────
+# depends on: gcs.bucket_name, armor.policy_self_link
 module "cdn" {
   source = "../../../../atoms/gcp/networking/cdn/v1"
 
-  environment = var.environment
-  cdn_name    = var.cdn_name
-  bucket_name = module.gcs.bucket_name
+  environment     = var.environment
+  cdn_name        = var.cdn_name
+  bucket_name     = module.gcs.bucket_name
+  domains         = var.domains
+  security_policy = module.armor.policy_self_link
 }

@@ -12,6 +12,13 @@ locals {
   origin_id = "eif-origin-${var.environment}"
 }
 
+resource "aws_cloudfront_origin_access_control" "this" {
+  name                              = "${var.environment}-oac"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 resource "aws_cloudfront_distribution" "this" {
   enabled             = true
   price_class         = var.price_class
@@ -19,12 +26,9 @@ resource "aws_cloudfront_distribution" "this" {
   default_root_object = "index.html"
 
   origin {
-    domain_name = var.origin_domain_name
-    origin_id   = local.origin_id
-
-    s3_origin_config {
-      origin_access_identity = ""
-    }
+    domain_name              = var.origin_domain_name
+    origin_id                = local.origin_id
+    origin_access_control_id = aws_cloudfront_origin_access_control.this.id
   }
 
   default_cache_behavior {

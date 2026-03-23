@@ -13,3 +13,9 @@ variable "environment" {
   description = "Deployment environment (e.g. prod, staging, dev)."
   type        = string
 }
+
+variable "cloudfront_distribution_arn" {
+  description = "ARN of the CloudFront distribution allowed to access this bucket via OAC. Empty string skips bucket policy creation."
+  type        = string
+  default     = ""
+}
