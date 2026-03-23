@@ -23,7 +23,7 @@ resource "aws_cloudfront_distribution" "this" {
   enabled             = true
   price_class         = var.price_class
   web_acl_id          = var.web_acl_id != "" ? var.web_acl_id : null
-  default_root_object = "index.html"
+  default_root_object = var.default_root_object != "" ? var.default_root_object : null
 
   origin {
     domain_name              = var.origin_domain_name

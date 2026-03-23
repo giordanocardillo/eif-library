@@ -35,8 +35,9 @@ module "s3" {
 module "cloudfront" {
   source = "../../../../atoms/aws/networking/cloudfront/v1"
 
-  origin_domain_name = module.s3.bucket_regional_domain_name
-  environment        = var.environment
-  price_class        = var.cloudfront_price_class
-  web_acl_id         = module.waf.web_acl_arn
+  origin_domain_name  = module.s3.bucket_regional_domain_name
+  environment         = var.environment
+  price_class         = var.cloudfront_price_class
+  web_acl_id          = module.waf.web_acl_arn
+  default_root_object = "index.html"
 }

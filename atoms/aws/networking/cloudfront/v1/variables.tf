@@ -19,3 +19,9 @@ variable "web_acl_id" {
   type        = string
   default     = ""
 }
+
+variable "default_root_object" {
+  description = "Object to return when the root URL is requested (e.g. index.html). Empty string disables default root object."
+  type        = string
+  default     = ""
+}
