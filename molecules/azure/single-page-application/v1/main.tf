@@ -18,6 +18,7 @@ module "blob" {
   storage_account_name     = var.storage_account_name
   account_tier             = var.account_tier
   account_replication_type = var.account_replication_type
+  static_website_enabled   = true
 }
 
 # ── Atom: Front Door (global CDN + HTTPS redirect) ────────────────────────────

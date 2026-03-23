@@ -10,10 +10,10 @@ terraform {
 
 resource "aws_wafv2_web_acl" "this" {
   name  = var.name
-  scope = "CLOUDFRONT"
+  scope = var.scope
 
-  # WAFv2 for CloudFront must be created in us-east-1.
-  # Ensure the provider alias is configured at the caller level.
+  # When scope = "CLOUDFRONT" the WebACL must be created in us-east-1.
+  # Ensure the aws provider targets that region at the caller level.
 
   default_action {
     allow {}

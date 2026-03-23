@@ -15,6 +15,7 @@ module "gcs" {
   environment = var.environment
   bucket_name = var.bucket_name
   location    = var.location
+  public_read = true
 }
 
 # ── Atom: Cloud Armor (DDoS / IP filtering) ───────────────────────────────────
