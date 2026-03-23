@@ -1,6 +1,8 @@
 <!-- EIF Library — Component Library for the Elemental Infrastructure Framework -->
 <div align="center">
 
+<img src="logo.svg" alt="EIF Logo" width="120" /><br><br>
+
 <pre>
   E L E M E N T A L
 I N F R A S T R U C T U R E
