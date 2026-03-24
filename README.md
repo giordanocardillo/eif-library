@@ -39,20 +39,20 @@ Atoms are primitive, single-service building blocks. Molecules combine atoms int
 eif-library/
 ├── atoms/
 │   ├── aws/
-│   │   ├── networking/cloudfront/v1/
-│   │   ├── security/waf/v1/
-│   │   └── storage/s3/v1/
+│   │   ├── networking/cloudfront/1.0.0/
+│   │   ├── security/waf/1.0.0/
+│   │   └── storage/s3/1.0.0/
 │   ├── azure/
-│   │   ├── networking/frontdoor/v1/
-│   │   └── storage/blob/v1/
+│   │   ├── networking/frontdoor/1.0.0/
+│   │   └── storage/blob/1.0.0/
 │   └── gcp/
-│       ├── networking/cdn/v1/
-│       ├── security/armor/v1/
-│       └── storage/gcs/v1/
+│       ├── networking/cdn/1.0.0/
+│       ├── security/armor/1.0.0/
+│       └── storage/gcs/1.0.0/
 └── molecules/
-    ├── aws/single-page-application/v1/
-    ├── azure/single-page-application/v1/
-    └── gcp/single-page-application/v1/
+    ├── aws/single-page-application/1.0.0/
+    ├── azure/single-page-application/1.0.0/
+    └── gcp/single-page-application/1.0.0/
 ```
 
 ---
@@ -65,24 +65,24 @@ Atoms are the primitive layer — one cloud service per atom. They are generic b
 
 | Atom | Path | Description |
 |---|---|---|
-| `s3` | `atoms/aws/storage/s3/v1` | S3 bucket with versioning and full public access block. Optionally grants a CloudFront distribution access via OAC bucket policy. |
-| `waf` | `atoms/aws/security/waf/v1` | WAFv2 WebACL with a single AWS managed rule group. Scope is configurable (`CLOUDFRONT` or `REGIONAL`). |
-| `cloudfront` | `atoms/aws/networking/cloudfront/v1` | CloudFront distribution with OAC-based S3 origin, HTTPS redirect, and optional WAF. Default root object is configurable. |
+| `s3` | `atoms/aws/storage/s3/1.0.0` | S3 bucket with versioning and full public access block. Optionally grants a CloudFront distribution access via OAC bucket policy. |
+| `waf` | `atoms/aws/security/waf/1.0.0` | WAFv2 WebACL with a single AWS managed rule group. Scope is configurable (`CLOUDFRONT` or `REGIONAL`). |
+| `cloudfront` | `atoms/aws/networking/cloudfront/1.0.0` | CloudFront distribution with OAC-based S3 origin, HTTPS redirect, and optional WAF. Default root object is configurable. |
 
 ### Azure
 
 | Atom | Path | Description |
 |---|---|---|
-| `blob` | `atoms/azure/storage/blob/v1` | Azure Storage Account with TLS 1.2 enforced and HTTPS-only traffic. Static website hosting is opt-in. |
-| `frontdoor` | `atoms/azure/networking/frontdoor/v1` | Azure Front Door profile, endpoint, origin group, and route. Enforces HTTPS with automatic HTTP→HTTPS redirect. |
+| `blob` | `atoms/azure/storage/blob/1.0.0` | Azure Storage Account with TLS 1.2 enforced and HTTPS-only traffic. Static website hosting is opt-in. |
+| `frontdoor` | `atoms/azure/networking/frontdoor/1.0.0` | Azure Front Door profile, endpoint, origin group, and route. Enforces HTTPS with automatic HTTP→HTTPS redirect. |
 
 ### GCP
 
 | Atom | Path | Description |
 |---|---|---|
-| `gcs` | `atoms/gcp/storage/gcs/v1` | GCS bucket with uniform bucket-level access. Website configuration and public read IAM are opt-in. |
-| `armor` | `atoms/gcp/security/armor/v1` | Cloud Armor security policy with a default allow rule and dynamic IP block rules. |
-| `cdn` | `atoms/gcp/networking/cdn/v1` | Global HTTPS load balancer backed by a GCS bucket. Includes Google-managed SSL certificate, HTTP→HTTPS redirect, shared static IP, and optional Cloud Armor policy. |
+| `gcs` | `atoms/gcp/storage/gcs/1.0.0` | GCS bucket with uniform bucket-level access. Website configuration and public read IAM are opt-in. |
+| `armor` | `atoms/gcp/security/armor/1.0.0` | Cloud Armor security policy with a default allow rule and dynamic IP block rules. |
+| `cdn` | `atoms/gcp/networking/cdn/1.0.0` | Global HTTPS load balancer backed by a GCS bucket. Includes Google-managed SSL certificate, HTTP→HTTPS redirect, shared static IP, and optional Cloud Armor policy. |
 
 ---
 
@@ -96,9 +96,9 @@ A globally distributed static web application with CDN, HTTPS, and edge security
 
 | Cloud | Path | Atoms | Dependency chain |
 |---|---|---|---|
-| AWS | `molecules/aws/single-page-application/v1` | `s3` + `waf` + `cloudfront` | `cloudfront` ← `s3.bucket_regional_domain_name`, `waf.web_acl_arn` · `s3` bucket policy ← `cloudfront.distribution_arn` |
-| Azure | `molecules/azure/single-page-application/v1` | `blob` + `frontdoor` | `frontdoor` ← `blob.primary_web_endpoint` |
-| GCP | `molecules/gcp/single-page-application/v1` | `gcs` + `armor` + `cdn` | `cdn` ← `gcs.bucket_name`, `armor.policy_self_link` |
+| AWS | `molecules/aws/single-page-application/1.0.0` | `s3` + `waf` + `cloudfront` | `cloudfront` ← `s3.bucket_regional_domain_name`, `waf.web_acl_arn` · `s3` bucket policy ← `cloudfront.distribution_arn` |
+| Azure | `molecules/azure/single-page-application/1.0.0` | `blob` + `frontdoor` | `frontdoor` ← `blob.primary_web_endpoint` |
+| GCP | `molecules/gcp/single-page-application/1.0.0` | `gcs` + `armor` + `cdn` | `cdn` ← `gcs.bucket_name`, `armor.policy_self_link` |
 
 #### AWS inputs
 
@@ -172,7 +172,7 @@ This library is consumed by the `eif` CLI. In your library repository, reference
 {
   "matter": "my-app",
   "molecules": [
-    { "name": "single-page-application", "source": "molecules/aws/single-page-application/v1" }
+    { "name": "single-page-application", "source": "aws/single-page-application", "version": "1.0.0" }
   ]
 }
 ```
@@ -190,12 +190,20 @@ See the [eif CLI](https://github.com/giordanocardillo/eif) for the full deployme
 
 ## ◑ Versioning
 
-Atoms and molecules follow a `v1/`, `v2/`, … versioning scheme. Breaking changes (removed variables, changed output names, restructured resources) always get a new version directory. Bug fixes and new optional variables are applied in place.
+Atoms and molecules use **semantic versioning** (`MAJOR.MINOR.PATCH`). Each version is an immutable directory — matters pin an exact version and are never affected by changes to other versions.
 
-Molecule sources are pinned in `composition.json`. To upgrade all pinned versions to the latest available:
+| Bump type | When to use |
+|---|---|
+| `patch` | Bug fix, no interface change |
+| `minor` | New optional variable or output |
+| `major` | Breaking change — required var added, output removed, type changed |
+
+Molecule versions are pinned in each matter's `composition.json`. Use the `eif particle` package manager to install, update, and inspect versions:
 
 ```bash
-eif upgrade aws my-app dev
+eif particle install          # install all pinned versions
+eif particle outdated         # show available updates
+eif particle update --safe    # update, skipping major bumps
 ```
 
 ---
@@ -216,13 +224,13 @@ eif new molecule
 eif new molecule my-service
 ```
 
-Run these commands from inside this repository. `eif` detects the existing providers from `providers/`, checks for existing versions, and creates the next version if the atom or molecule already exists (e.g. `v2/`). Each scaffold emits starter `main.tf`, `variables.tf`, and `outputs.tf` ready to be filled in.
+Run these commands from inside this repository. `eif` checks for existing versions and prompts for the bump type (patch / minor / major) when one already exists, computing the next semver automatically. Each scaffold emits starter `main.tf`, `variables.tf`, and `outputs.tf` ready to be filled in.
 
 ### Conventions
 
 - One service per atom. No use-case assumptions — keep atoms generic.
-- Place atoms under `atoms/<cloud>/<category>/<name>/v1/` with `main.tf`, `variables.tf`, and `outputs.tf`.
-- Place molecules under `molecules/<cloud>/<name>/v1/` with the same three files.
+- Place atoms under `atoms/<cloud>/<category>/<name>/1.0.0/` with `main.tf`, `variables.tf`, and `outputs.tf`.
+- Place molecules under `molecules/<cloud>/<name>/1.0.0/` with the same three files.
 - Use `ManagedBy = "eif"` / `managed_by = "eif"` tags where supported.
 - Open an issue before submitting large structural changes.
 

@@ -10,7 +10,7 @@ terraform {
 
 # ── Atom: Blob Storage (static website origin) ────────────────────────────────
 module "blob" {
-  source = "../../../../atoms/azure/storage/blob/v1"
+  source = "../../../../atoms/azure/storage/blob/1.0.0"
 
   environment              = var.environment
   resource_group_name      = var.resource_group_name
@@ -24,7 +24,7 @@ module "blob" {
 # ── Atom: Front Door (global CDN + HTTPS redirect) ────────────────────────────
 # depends on: frontdoor ← blob.primary_web_endpoint (origin)
 module "frontdoor" {
-  source = "../../../../atoms/azure/networking/frontdoor/v1"
+  source = "../../../../atoms/azure/networking/frontdoor/1.0.0"
 
   environment         = var.environment
   resource_group_name = var.resource_group_name

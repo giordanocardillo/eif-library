@@ -10,7 +10,7 @@ terraform {
 
 # ── Atom: GCS (static asset origin) ──────────────────────────────────────────
 module "gcs" {
-  source = "../../../../atoms/gcp/storage/gcs/v1"
+  source = "../../../../atoms/gcp/storage/gcs/1.0.0"
 
   environment = var.environment
   bucket_name = var.bucket_name
@@ -20,7 +20,7 @@ module "gcs" {
 
 # ── Atom: Cloud Armor (DDoS / IP filtering) ───────────────────────────────────
 module "armor" {
-  source = "../../../../atoms/gcp/security/armor/v1"
+  source = "../../../../atoms/gcp/security/armor/1.0.0"
 
   environment       = var.environment
   policy_name       = var.armor_policy_name
@@ -30,7 +30,7 @@ module "armor" {
 # ── Atom: Cloud CDN + HTTPS load balancer ────────────────────────────────────
 # depends on: gcs.bucket_name, armor.policy_self_link
 module "cdn" {
-  source = "../../../../atoms/gcp/networking/cdn/v1"
+  source = "../../../../atoms/gcp/networking/cdn/1.0.0"
 
   environment     = var.environment
   cdn_name        = var.cdn_name

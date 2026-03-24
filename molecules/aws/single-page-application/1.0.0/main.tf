@@ -12,7 +12,7 @@ terraform {
 # NOTE: WAFv2 for CloudFront must be deployed in us-east-1. Ensure the aws
 # provider in your account config targets us-east-1, or use a provider alias.
 module "waf" {
-  source = "../../../../atoms/aws/security/waf/v1"
+  source = "../../../../atoms/aws/security/waf/1.0.0"
 
   name                    = var.waf_name
   environment             = var.environment
@@ -21,7 +21,7 @@ module "waf" {
 
 # ── Atom: S3 ──────────────────────────────────────────────────────────────────
 module "s3" {
-  source = "../../../../atoms/aws/storage/s3/v1"
+  source = "../../../../atoms/aws/storage/s3/1.0.0"
 
   bucket_name                 = var.bucket_name
   versioning_enabled          = var.s3_versioning_enabled
@@ -33,7 +33,7 @@ module "s3" {
 # depends on: s3.bucket_regional_domain_name, waf.web_acl_arn
 # s3 bucket policy depends on: cloudfront.distribution_arn (wired back via OAC)
 module "cloudfront" {
-  source = "../../../../atoms/aws/networking/cloudfront/v1"
+  source = "../../../../atoms/aws/networking/cloudfront/1.0.0"
 
   origin_domain_name  = module.s3.bucket_regional_domain_name
   environment         = var.environment
